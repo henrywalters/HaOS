@@ -1,0 +1,5 @@
+﻿init $HaOS | Background;
+init $startbar | Bar_left;
+setColor $HaOS | #b7d2ff;
+setColor $ startbar | #669fff;
+begin | newSession;
