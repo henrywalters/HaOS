@@ -90,6 +90,30 @@
 			user_id:false,
 			login_required:false,
 			variables:0
+		},
+		drag:{
+			object_id : true,
+			user_id:false,
+			login_required:false,
+			variables:2
+		},
+		stopdrag:{
+			object_id : true,
+			user_id : false,
+			login_required:false,
+			variables:2
+		},
+		resize:{
+			object_id : true,
+			user_id:false,
+			login_required:false,
+			variables:2
+		},
+		stopresize:{
+			object_id : true,
+			user_id : false,
+			login_required:false,
+			variables:2
 		}
 	}
 
@@ -216,15 +240,14 @@ var domObjs = {};
 function kernal(command){
 	reply = {error:"",response:""};
 	command.cmd = command.cmd.split(' ').join('');
-	console.log(command.cmd.indexOf('init'));
+
 	if (command.cmd.indexOf('init') != -1){
-		console.log(command);
-		if (domObjs.hasOwnProperty(command.object_id)){
+
+		if (domObjs.hasOwnProperty(command.object_id) && command.object_id != 'terminal'){
 			reply.error = "Object with id: '" + command.object_id + "' already exists";
 		} else {
 
 			try {
-
 				domObjs[command.object_id] = (eval("new " + command.variables[0].trim() + "('" + command.object_id + "')"));
 				reply.response = command.object_id + " created successfully";		
 			} catch (error) {
@@ -234,17 +257,39 @@ function kernal(command){
 	}
 	
 	if (command.cmd == 'setColor'){
-		console.log(domObjs);
-		console.log(command.variables[0]);
 		if (domObjs.hasOwnProperty(command.object_id)){
-			console.log(domObjs[command.object_id]);
 			try {
-
 				domObjs[command.object_id].setColor(command.variables[0]);
 				reply.response = command.object_id + " created successfully";
 			} catch (error) {
 				reply.error = "Something went wrong: " + error;
 			}	
+		}
+	}
+
+	if (command.cmd == 'drag'){
+		if (domObjs.hasOwnProperty(command.object_id)){
+
+			domObjs[command.object_id].drag(command.variables[0],command.variables[1]);
+
+		}
+	}
+
+	if (command.cmd == 'stopdrag'){
+		if (domObjs.hasOwnProperty(command.object_id)){
+			domObjs[command.object_id].stopdrag(command.variables[0],command.variables[1]);
+		}
+	}
+
+	if (command.cmd == 'resize'){
+		if (domObjs.hasOwnProperty(command.object_id)){
+			domObjs[command.object_id].resize(command.variables[0],command.variables[1]);
+		}
+	}
+
+	if (command.cmd == 'stopresize'){
+		if (domObjs.hasOwnProperty(command.object_id)){
+			domObjs[command.object_id].stopresize(command.variables[0],command.variables[1]);
 		}
 	}
 	
@@ -257,8 +302,6 @@ function runScript(scriptName){
 		for (var i = 0; i < data.length; i++){
 
 			response = sendCommandToKernal(data[i].split('↵').join(''));
-			console.log(data[i].split('↵').join(''),response);
-
 		}
 	});
 }

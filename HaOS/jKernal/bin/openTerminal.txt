@@ -1,1 +1,1 @@
-init | Terminal;
+init $terminal | Terminal;
