@@ -1,6 +1,6 @@
 <?php
 	$servername = "localhost:3306";
-	$username = 'root';
+	$username = 'american_henry';
 	$password = '';
 	$db_name = "";
 	$GLOBALS['sql_conn'] = new mysqli($servername, $username, $password);
