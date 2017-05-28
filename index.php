@@ -1,4 +1,9 @@
 <?php
+include 'secure.php';
+
+if ($logged_in != true){
+	header("Location: welcome");
+}
 include 'jObject/domObjects.php';
 
 ?>
